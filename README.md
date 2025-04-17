@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # pizza-menu-react
 =======
 # Getting Started with Create React App
