@@ -2,7 +2,6 @@ import "./index.css";
 import pizzaData from "./pizzaData.js";
 
 export default function App() {
-  //   const x = "jonas";
   return (
     <div className="container">
       <Header />
@@ -21,66 +20,82 @@ function Header() {
   );
 }
 
+// Menu
 function Menu() {
   const pizzas = pizzaData;
   const numPizzas = pizzas.length;
+
   return (
     <main className="menu">
       <h2>Our Menu</h2>
 
       {numPizzas > 0 ? (
-        <ul className="pizzas">
-          {pizzaData.map((pizza) => (
-            <Pizza pizzaObj={pizza} key={pizza.name} />
-          ))}
-        </ul>
+        <>
+          <p>
+            Authentic Italian cuisine. 6 creative dishes to choose from. All
+            from our stone oven, all organic, all delicious.{" "}
+          </p>
+
+          <ul className="pizzas">
+            {pizzas.map((pizza) => (
+              <Pizza pizzas={pizza} key={pizza.name} />
+            ))}
+          </ul>
+        </>
       ) : (
-        <p className="err" style={{ fontSize: "30px" }}>
-          We're still working on our menu :)
-        </p>
+        <p>We're still working on our menu yet</p>
       )}
     </main>
   );
 }
 
-function Pizza(props) {
+// Pizzas component
+function Pizza({ pizzas }) {
   return (
-    <li className={`pizza ${props.pizzaObj.soldOut ? "sold-out" : ""}`}>
-      <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
+    <li className={`pizza ${pizzas.soldOut ? "sold-out" : ""}`}>
+      <img src={pizzas.photoName} alt={pizzas.name} />
+
       <div>
-        <h3>{props.pizzaObj.name}</h3>
-        <p>{props.pizzaObj.ingredients}</p>
-        <span>{props.pizzaObj.price}</span>
+        <h3>{pizzas.name}</h3>
+
+        <p>{pizzas.ingredients}</p>
+
+        <span>{pizzas.soldOut ? "Sold Out" : pizzas.price}</span>
       </div>
     </li>
   );
 }
 
+// Footer
 function Footer() {
   const hour = new Date().getHours();
-  const openHour = 12;
+  const openHour = 10;
   const closeHour = 22;
   const isOpen = hour >= openHour && hour <= closeHour;
 
   return (
     <footer className="footer">
-      {isOpen ? (
-        <Order openHour={openHour} closeHour={closeHour} isOpen={isOpen} />
-      ) : (
-        <p>
-          We're happy to welcome you between {openHour}:00 and {closeHour}:00
-        </p>
-      )}
+      <Order openHour={openHour} closeHour={closeHour} isOpen={isOpen} />
     </footer>
   );
 }
 
-function Order(props) {
+function Order({ openHour, closeHour, isOpen }) {
   return (
     <div className="order">
-      <p>
-        We're open untill {props.closeHour}:00. Come visit us or order online.
-      </p>
+      {isOpen ? (
+        <>
+          <p className="open">
+            We're open untill {closeHour}:00. Come visit us or order online
+          </p>
+
+          <button className="btn">Order</button>
+        </>
+      ) : (
+        <p className="closed">
+          We're happy to welcome you between {openHour}:00 and {closeHour}:00
+        </p>
+      )}
     </div>
   );
 }
